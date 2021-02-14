@@ -28,8 +28,8 @@ def main():
 	"""
 	company_name = ['Pfizer', 'AstraZeneca', 'Sputnik', 'Sinovac']
 
-	# testing_countries = ['Egypt', 'Kenya', 'Nigeria', 'Zambia']
-	testing_countries = []
+	testing_countries = ['Egypt', 'Kenya', 'Nigeria', 'Zambia']
+	# testing_countries = []
 
 	"""
 	Months refer to the date range 
@@ -45,15 +45,20 @@ def main():
 		with open('sample.csv', mode='r') as csv_file:
 			csv_reader = csv.DictReader(csv_file)
 			
+			summary_data = []
+
 			for row in csv_reader:
 				# print(row)
 				second = row['\ufeffCountry']
-				if (second not in testing_countries&&len(testing_countries)!=0): 
+				if (second not in testing_countries and len(testing_countries)!=0): 
 					continue
 
 				full_phrase = first+" "+second
 
-				# print(full_phrase)
+				print(full_phrase)
+
+				counter = 0
+				sum_sent = 0
 
 				for i in range(0, len(months)-1):
 					googlenews.set_time_range(months[i],months[i+1])
@@ -78,6 +83,9 @@ def main():
 							result['% Neutral'] = sentiment_dict['neu']*100
 							result['% Positive'] = sentiment_dict['pos']*100
 							result['Magnitude'] = sentiment_dict['compound']*50 + 50
+
+							counter += 1
+							sum_sent += result['Magnitude']
 							
 							# result.pop('date')
 							# result.pop('datetime')
@@ -87,9 +95,15 @@ def main():
 							fin.append(result)
 							seen.append(result['title'])
 
+				country_comp_score = {'country': second, 'latitude': row['Latitude'], 'longitude': row['Longitude'], 'magnitude': (sum_sent/counter)}
+				summary_data.append(country_comp_score)
+
 			df = pd.DataFrame(fin)
 			df.drop(columns=['date', 'datetime', 'img', 'media'])
 			df.to_csv("./Output/{}_output.csv".format(first),index=False)
+
+			summary_df = pd.DataFrame(summary_data)
+			summary_df.to_csv("./Output/{}_summary_output.csv".format(first),index=False)
 
 if __name__ == "__main__":
     main()
