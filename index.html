@@ -1,58 +1,214 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>geoPath measures</title>
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+#content .info {
+  height: 20px;
+}
+
+#content .map path {
+  fill: #aaa;
+  stroke: #fff;
+}
+
+#content .bounding-box rect {
+  fill: none;
+  stroke: #333;
+  stroke-dasharray: 2,1;
+}
+
+#content .legend rect{
+    fill: #eee;
+    stroke:#eee
+}
+
+#content .centroid {
+  display: none;
+}
+
+#content .centroid circle {
+  fill: red;
+}
+
+</style>
+
+<body>
+  <div id="content">
+    <div class="info">Hover over a country</div>
+    <div class = "news">Headlines: </div>
+    <svg width="1020px" height="600px">
+      <g class="map"></g>
+      <g class = "legend"></g>
+      <g class="bounding-box"><rect></rect></g>
+      <g class="centroid"><circle r="4"></circle></g>
+    </svg>
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+
+  <script>
+
+// REQUEST DATA
+d3.json('africa.json', function(err, json) {
+  update(json)
+})
+
+function countryNumber (d) {
+    if (d == "Nigeria"){
+        return (0);
+    }
+    if (d == "Kenya"){
+        return (1);
+    }
+    if (d == "Egypt"){
+        return (2);
+    }
+    if (d == "Zambia"){
+        return (3);
+    }
+    return (0);
+}
+
+// console.table(dataset[1]);
+const metric = "percentage"
+
+let dimensions = {
+    width: window.innerWidth * 0.9,
+    margin:{
+        top: 10,
+        right: 10,
+        bottom: 10,
+        left: 10,
+    }
+}
+
+dimensions.boundedWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right
+
+var projection = d3.geoMercator()
+  .scale(400)
+  .translate([200, 280])
+  .center([0, 5]);
+
+var geoGenerator = d3.geoPath()
+  .projection(projection);
+
+console.log(geoGenerator(projection))
+
+function handleMouseover(d) {
+
+  var pixelArea = geoGenerator.area(d);
+  var bounds = geoGenerator.bounds(d);
+  var centroid = geoGenerator.centroid(d);
+  var measure = geoGenerator.measure(d);
+
+  d3.select('#content .info')
+    .text(d.properties.name + ' (path.area = ' + pixelArea.toFixed(1) + ' path.measure = ' + measure.toFixed(1) + ')');
+
+  d3.select('#content .bounding-box rect')
+    .attr('x', bounds[0][0])
+    .attr('y', bounds[0][1])
+    .attr('width', bounds[1][0] - bounds[0][0])
+    .attr('height', bounds[1][1] - bounds[0][1]);
+
+    d3.select('#content .legend')
+    .append("rect")
+    .attr('x', 600)
+    .attr('y', 50)
+    .attr('width', 350)
+    .attr('height', 520)
     
-    <title>
-      Intro to MapView - Create a 2D map | Sample | ArcGIS API for JavaScript
-      4.18
-    </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css"/>
-    <link rel="stylesheet" href="style.css"/>
-    <script src="https://js.arcgis.com/4.18/"></script>
-    <script src="index.js"></script>
 
-  </head>
+    const dataset = d3.csv("/pfizer_test_2.csv", function(data) {
+    for (var i = 0; i < data.length; i++) {
+        console.log(data[i].title);
+        console.log(data[i].score);
+    }
 
-  <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-md-12">
-                <div id="title" class="page-header">
-                    <h2>Africa Disinfo Narratives</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-4 col-md-4">
-                <div class="form-group">
-                    <label for="dimensions" class="col-form-label">Factor </label>
-                    <select class="form-control" id="dimensions"></select>
-                </div>
-            </div>
-            <div class="col-xs-8 col-md-8"></div>
-        </div>
-        
-        <div class="row">
-            <div class="col-xs-12 col-md-12" id="source">
-                <footnote></footnote>
-            </div>
-        </div>
+    const newsAccessor = d => data[countryNumber(d)].title
+    const scoreAccessor = d => data[countryNumber(d)].score
 
-    <div id="viewDiv"></div>
-    <button>Button</button>
-    <div class="row">
-        <div class="col-xs-12 col-md-12">
-            <footer>
-                <span>Treehacks 2021</a></span>
-            </footer>
-        </div>
-    </div>
-</div>
+    console.log(data[1].title);
+    console.log("HI");
 
-  </body>
+    console.log(countryNumber("Nigeria"));
+    console.log(newsAccessor("Nigeria"));
+    console.log(countryNumber("Zambia"));
+    console.log(newsAccessor("Zambia"));
+
+    d3.select('#content .news')
+    .text(newsAccessor(d.properties.name));
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",75)
+    .attr('x',610)
+    .attr("class","legend-title")
+    .text("Country: " + d.properties.name)
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",95)
+    .attr('x',610)
+    .attr("class","legend-title")
+    .text("Pfizer Score: " + scoreAccessor(d.properties.name))
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",115)
+    .attr('x',610)
+    .attr("class","legend-title")
+    .text("Moderna Score: 23" )
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",135)
+    .attr('x',610)
+    .attr("class","legend-title")
+    .text("Sinovac Score: 43" )
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",155)
+    .attr('x',610)
+    .attr("class","legend-title")
+    .text("Sputnik V Score: 55" )
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",175)
+    .attr('x',610)
+    .attr("class","legend-title")
+    .text("Oxford Score: 70")
+    });
+
+    
+
+  d3.select('#content .centroid')
+    .style('display', 'inline')
+    .attr('transform', 'translate(' + centroid + ')');
+}
+
+function update(geojson) {
+  var u = d3.select('#content g.map')
+    .selectAll('path')
+    .data(geojson.features);
+
+  u.enter()
+    .append('path')
+    .attr('d', geoGenerator)
+    .on('mouseover', handleMouseover);
+}
+
+  </script>
+</body>
 </html>
