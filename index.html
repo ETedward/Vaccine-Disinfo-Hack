@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-  <title>geoPath measures</title>
+  <title>Africa Disinfo Map</title>
 </head>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <style>
 body {
@@ -39,25 +41,52 @@ body {
   fill: red;
 }
 
+#content .legend .legend-title {
+    font-weight: bold;
+    font-size: large;
+    fill: rgb(18, 18, 68);
+}
+#content .news {
+    font-size: large;
+}
 </style>
 
 <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div id="title" class="page-header">
+                    <h2>Africa Vaccine Monitor</h2>
+                </div>
+            </div>
+        </div>
+    </div>
   <div id="content">
-    <div class="info">Hover over a country</div>
-    <div class = "news">Headlines: </div>
     <svg width="1020px" height="600px">
       <g class="map"></g>
       <g class = "legend"></g>
       <g class="bounding-box"><rect></rect></g>
       <g class="centroid"><circle r="4"></circle></g>
     </svg>
+    <div style="padding-left: 250px">
+    <div class="info"><h3>Identified News:</h3></div>
+    <div class = "news"></div>
+    </div>
+    <br>
   </div>
-
+  <div class="row">
+    <div class="col-xs-12 col-md-12" id="source">
+        <input type="button" onclick="location.href='./esri.html';" value="Switch to Disinformation Narratives" />
+    </div>
+    <br>
+</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+  <script src="https://js.arcgis.com/4.18/"></script>
+  <link rel="stylesheet" href="./style.css"/>
+  <script src="./index.js"></script>
 
   <script>
-
 // REQUEST DATA
 d3.json('africa.json', function(err, json) {
   update(json)
@@ -80,19 +109,6 @@ function countryNumber (d) {
 }
 
 // console.table(dataset[1]);
-const metric = "percentage"
-
-let dimensions = {
-    width: window.innerWidth * 0.9,
-    margin:{
-        top: 10,
-        right: 10,
-        bottom: 10,
-        left: 10,
-    }
-}
-
-dimensions.boundedWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right
 
 var projection = d3.geoMercator()
   .scale(400)
@@ -111,8 +127,8 @@ function handleMouseover(d) {
   var centroid = geoGenerator.centroid(d);
   var measure = geoGenerator.measure(d);
 
-  d3.select('#content .info')
-    .text(d.properties.name + ' (path.area = ' + pixelArea.toFixed(1) + ' path.measure = ' + measure.toFixed(1) + ')');
+//   d3.select('#content .info')
+//     .text(d.properties.name + ' (path.area = ' + pixelArea.toFixed(1) + ' path.measure = ' + measure.toFixed(1) + ')');
 
   d3.select('#content .bounding-box rect')
     .attr('x', bounds[0][0])
@@ -159,39 +175,32 @@ function handleMouseover(d) {
     .append("text")
     .attr("y",95)
     .attr('x',610)
-    .attr("class","legend-title")
     .text("Pfizer Score: " + scoreAccessor(d.properties.name))
 
     d3.select('#content .legend')
     .append("text")
     .attr("y",115)
     .attr('x',610)
-    .attr("class","legend-title")
     .text("Moderna Score: 23" )
 
     d3.select('#content .legend')
     .append("text")
     .attr("y",135)
     .attr('x',610)
-    .attr("class","legend-title")
     .text("Sinovac Score: 43" )
 
     d3.select('#content .legend')
     .append("text")
     .attr("y",155)
     .attr('x',610)
-    .attr("class","legend-title")
     .text("Sputnik V Score: 55" )
 
     d3.select('#content .legend')
     .append("text")
     .attr("y",175)
     .attr('x',610)
-    .attr("class","legend-title")
     .text("Oxford Score: 70")
     });
-
-    
 
   d3.select('#content .centroid')
     .style('display', 'inline')
