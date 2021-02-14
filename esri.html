@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="style.css"/>
     <script src="https://js.arcgis.com/4.18/"></script>
     <script src="index.js"></script>
+    <script src="jquery-3.5.1.min.js"></script>
 
   </head>
 
@@ -31,34 +32,55 @@
             <div class="col-xs-4 col-md-4">
                 <div class="form-group">
                     <label for="dimensions" class="col-form-label">Search Trends </label>
-                    <select class="form-control" id="dimensions">
-                        <option value="saab">"Bill Gates & Covid" — Conspiracy that Gates invented Covid-19</option>
-                        <option value="opel">"WHO & Bribe" — False accusations WHO Bribed Madagascar President</option>
-                        <option value="audi">"Covid 5G" — "Vaccines emit 5g waves that brainswash people"</option>
-                        <option value="d">"Vaccine & Microchip" — Conspiracy vaccines install microchips</option>
-                        <option value="f">"Vaccine & Autism" — "False accusations that vaccines cause autism in children"</option>
-                        <option value="e">"Vaccine & Guinea Pig" — "Accusations the West first uses Africa for vaccine experimentation, rooted in historical precedence"</option>
+                    <select class="form-control" id="chart_selector" onchange="showDiv('hidden_div', this)">
+                        <option value="1">"Bill Gates & Covid" — Conspiracy that Gates invented Covid-19</option>
+                        <option value="2">"WHO & Bribe" — False accusations WHO Bribed Madagascar President</option>
+                        <option value="3">"Covid 5G" — "Vaccines emit 5g waves that brainswash people"</option>
+                        <option value="4">"Vaccine & Microchip" — Conspiracy vaccines install microchips</option>
+                        <option value="5">"Vaccine & Autism" — "False accusations that vaccines cause autism in children"</option>
+                        <option value="6">"Vaccine & Guinea Pig" — "Accusations the West first uses Africa for vaccine experimentation, rooted in historical precedence"</option>
                     </select>
                 </div>
             </div>
             <div class="col-xs-8 col-md-8"></div>
         </div>
-
-        <div style = "display: none">
-            <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/2431_RC04/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"bill gates covid","geo":"ZA","time":"today 12-m"}],"category":0,"property":""}, {"exploreQuery":"geo=ZA&q=bill%20gates%20covid&date=today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"}); </script> 
+            
+        <div id = "1" style = "display:none"> 
+        <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/2431_RC04/embed_loader.js"> </script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"bill gates covid","geo":"ZA","time":"today 12-m"}],"category":0,"property":""}, {"exploreQuery":"geo=ZA&q=bill%20gates%20covid&date=today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"}); </script> 
         </div>
-        <!-- <div>
-        <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/2431_RC04/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"WHO corrupt","geo":"ZA","time":"today 12-m"}],"category":0,"property":""}, {"exploreQuery":"geo=ZA&q=WHO%20corrupt&date=today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"}); </script> 
-        </div> -->
         
-        <div class="row">
-            <div class="col-xs-12 col-md-12" id="source">
-                <footnote> 
-                </footnote>
-            </div>
+        <div id = "2" style = "display:none"> 
+        <script type="text/javascript"  
+        style="border-radius: 2px;box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.24) 0px 2px 2px 0px;height: 423px;"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"vaccine autism","geo":"ZA","time":"2020-02-14 2021-02-14"}],"category":0,"property":""}, {"exploreQuery":"geo=ZA&q=vaccine%20autism&date=today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>
         </div>
-        <br>
-    <h4>Map of Disinfo Spike Hotspots</h4>
+
+        <div id = "3" style = "display:none"> 
+        <script type="text/javascript"  
+        style="border-radius: 2px;box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.24) 0px 2px 2px 0px;height: 423px;"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"covid 5g","geo":"ZA","time":"2020-02-14 2021-02-14"}],"category":0,"property":""}, {"exploreQuery":"geo=ZA&q=vaccine%20autism&date=today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>
+        </div>
+
+        <div id = "4" style = "display:none"> 
+        <script type="text/javascript"  
+        style="border-radius: 2px;box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.24) 0px 2px 2px 0px;height: 423px;"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"vaccine microchip","geo":"ZA","time":"2020-02-14 2021-02-14"}],"category":0,"property":""}, {"exploreQuery":"geo=ZA&q=vaccine%20autism&date=today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>
+        </div>
+
+        <div id = "chart5" style = "display:none"> 
+        <script type="text/javascript"  
+        style="border-radius: 2px;box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.24) 0px 2px 2px 0px;height: 423px;"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"vaccine autism","geo":"ZA","time":"2020-02-14 2021-02-14"}],"category":0,"property":""}, {"exploreQuery":"geo=ZA&q=vaccine%20autism&date=today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>
+        </div>
+
+        <div id = "chart" style = "block:none"> 
+        <script type="text/javascript"  
+        style="border-radius: 2px;box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.24) 0px 2px 2px 0px;height: 423px;"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"guinea pig","geo":"ZA","time":"2020-02-14 2021-02-14"}],"category":0,"property":""}, {"exploreQuery":"geo=ZA&q=vaccine%20autism&date=today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>
+        </div>
+        <script>
+            function showDiv(divId, element)
+            {
+                document.getElementById(divId).style.display = element.value == 1 ? 'block' : 'none';
+            }
+        </script>
+    <br>
+    <h4>Map of 2021 Disinfo Spike Hotspots</h4>
 
     <div id="viewDiv"></div>
 

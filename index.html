@@ -69,7 +69,7 @@ body {
       <g class="centroid"><circle r="4"></circle></g>
     </svg>
     <div style="padding-left: 250px">
-    <div class="info"><h3>Identified News:</h3></div>
+    <div class="info"><h3>News Identifier:</h3></div>
     <div class = "news"></div>
     </div>
     <br>
@@ -93,17 +93,185 @@ d3.json('africa.json', function(err, json) {
 })
 
 function countryNumber (d) {
-    if (d == "Nigeria"){
+    if (d == "Somaliland"){
         return (0);
     }
-    if (d == "Kenya"){
+    if (d == "Western Sahara"){
         return (1);
     }
-    if (d == "Egypt"){
+    if (d == "Algeria"){
         return (2);
     }
-    if (d == "Zambia"){
+    if (d == "Angola"){
         return (3);
+    }
+    if (d == "Benin"){
+        return (4);
+    }
+    if (d == "Botswana"){
+        return (5);
+    }
+    if (d == "Burkina Faso"){
+        return (6);
+    }
+    if (d == "Burundi"){
+        return (7);
+    }
+    if (d == "Cameroon"){
+        return (8);
+    }
+    if (d == "Cape Verde"){
+        return (9);
+    }
+    if (d == "Central African Republic"){
+        return (10);
+    }
+    if (d == "Chad"){
+        return (11);
+    }
+    if (d == "Comoros"){
+        return (12);
+    }
+    if (d == "Democratic Republic of Congo"){
+        return (13);
+    }
+    if (d == "Republic of Congo"){
+        return (14);
+    }
+    if (d == "Cote d'Ivoire"){
+        return (15);
+    }
+    if (d == "Djibouti"){
+        return (16);
+    }
+    if (d == "Egypt"){
+        return (17);
+    }
+    if (d == "Equatorial Guinea"){
+        return (18);
+    }
+    if (d == "Eritea"){
+        return (19);
+    }
+    if (d == "Ethiopia"){
+        return (20);
+    }
+    if (d == "Gabon"){
+        return (21);
+    }
+    if (d == "The Gambia"){
+        return (22);
+    }
+    if (d == "Ghana"){
+        return (23);
+    }
+    if (d == "Guinea"){
+        return (24);
+    }
+    if (d == "Guinea-Bissau"){
+        return (25);
+    }
+    if (d == "Kenya"){
+        return (26);
+    }
+    if (d == "Lesotho"){
+        return (27);
+    }
+    if (d == "Liberia"){
+        return (28);
+    }
+    if (d == "Libya"){
+        return (29);
+    }
+    if (d == "Madagascar"){
+        return (30);
+    }
+    if (d == "Malawi"){
+        return (31);
+    }
+    if (d == "Mali"){
+        return (22);
+    }
+    if (d == "Mauritania"){
+        return (23);
+    }
+    if (d == "Mauritius"){
+        return (24);
+    }
+    if (d == "Morocco"){
+        return (25);
+    }
+    if (d == "Mozambique"){
+        return (26);
+    }
+    if (d == "Namibia"){
+        return (27);
+    }
+    if (d == "Niger"){
+        return (28);
+    }
+    if (d == "Nigeria"){
+        return (29);
+    }
+    if (d == "Niger"){
+        return (30);
+    }
+    if (d == "Nigeria"){
+        return (31);
+    }
+    if (d == "Rwanda"){
+        return (22);
+    }
+    if (d == "Saint Helena"){
+        return (23);
+    }
+    if (d == "Sao Tome and Principe"){
+        return (24);
+    }
+    if (d == "Senegal"){
+        return (25);
+    }
+    if (d == "Seychelles"){
+        return (26);
+    }
+    if (d == "Sierra Leone"){
+        return (27);
+    }
+    if (d == "Somalia"){
+        return (28);
+    }
+    if (d == "South Africa"){
+        return (29);
+    }
+    if (d == "South Sudan"){
+        return (30);
+    }
+    if (d == "Sudan"){
+        return (31);
+    }
+    if (d == "Swaziland"){
+        return (28);
+    }
+    if (d == "Tanzania"){
+        return (29);
+    }
+    if (d == "Togo"){
+        return (30);
+    }
+    if (d == "Tunisisa"){
+        return (31);
+    }
+    if (d == "Uganda"){
+        return (28);
+    }
+    if (d == "Zambia"){
+        return (29);
+    }
+    if (d == "Zimbabwe"){
+        return (30);
+    }
+    if (d == "British Indian Ocean Territory"){
+        return (31);
     }
     return (0);
 }
@@ -144,25 +312,29 @@ function handleMouseover(d) {
     .attr('height', 520)
     
 
-    const dataset = d3.csv("/pfizer_test_2.csv", function(data) {
+    const dataset = d3.csv("/complete_data.csv", function(data) {
     for (var i = 0; i < data.length; i++) {
-        console.log(data[i].title);
-        console.log(data[i].score);
+        console.log(data[i].pfizer); 
+        console.log(data[i].ptitle);
     }
 
-    const newsAccessor = d => data[countryNumber(d)].title
-    const scoreAccessor = d => data[countryNumber(d)].score
-
+    const pnewsAccessor = d => data[countryNumber(d)].ptitle
+    const pscoreAccessor = d => data[countryNumber(d)].pfizer
+    const rnewsAccessor = d => data[countryNumber(d)].stitle
+    const rscoreAccessor = d => data[countryNumber(d)].sputnik
+    const anewsAccessor = d => data[countryNumber(d)].atitle
+    const ascoreAccessor = d => data[countryNumber(d)].astrazeneca
+    
     console.log(data[1].title);
     console.log("HI");
 
-    console.log(countryNumber("Nigeria"));
-    console.log(newsAccessor("Nigeria"));
-    console.log(countryNumber("Zambia"));
-    console.log(newsAccessor("Zambia"));
+    console.log(countryNumber("Botswana"));
+    console.log(rscoreAccessor("Botswana"));
+    console.log(countryNumber("Republic of Congo"));
+    console.log(rscoreAccessor("Republic of Congo"));
 
     d3.select('#content .news')
-    .text(newsAccessor(d.properties.name));
+    .text(anewsAccessor(d.properties.name));
 
     d3.select('#content .legend')
     .append("text")
@@ -175,13 +347,13 @@ function handleMouseover(d) {
     .append("text")
     .attr("y",95)
     .attr('x',610)
-    .text("Pfizer Score: " + scoreAccessor(d.properties.name))
+    .text("Pfizer Score: " + pscoreAccessor(d.properties.name))
 
     d3.select('#content .legend')
     .append("text")
     .attr("y",115)
     .attr('x',610)
-    .text("Moderna Score: 23" )
+    .text("Sputnik Score: " + rscoreAccessor(d.properties.name) )
 
     d3.select('#content .legend')
     .append("text")
@@ -193,13 +365,8 @@ function handleMouseover(d) {
     .append("text")
     .attr("y",155)
     .attr('x',610)
-    .text("Sputnik V Score: 55" )
+    .text("AstraZeneca Score: " + ascoreAccessor(d.properties.name) )
 
-    d3.select('#content .legend')
-    .append("text")
-    .attr("y",175)
-    .attr('x',610)
-    .text("Oxford Score: 70")
     });
 
   d3.select('#content .centroid')
