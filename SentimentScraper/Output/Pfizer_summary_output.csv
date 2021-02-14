@@ -1,5 +1,4 @@
-country,latitude,longitude,magnitude
-Egypt,30.05,31.25,55.35763513513515
-Kenya,-1.283333333,36.816667,49.70406976744187
-Nigeria,9.083333333,7.533333,47.16373239436619
-Zambia,-15.41666667,28.283333,55.91746268656717
+country,latitude,longitude,magnitude,positive,negative,pos/(pos+neg),Most negative title
+Egypt,30.05,31.25,55.59050632911392,29,50,0.3670886075949367,COVAX: Scientists slam FG over Nigeria’s exclusion from Pfizer-BioNTech vaccine sharing formula
+Kenya,-1.283333333,36.816667,50.274022988505756,25,62,0.28735632183908044,"Shocking! 23 elderly patients die in Norway after Pfizer COVID vaccination, probe launched"
+Nigeria,9.083333333,7.533333,47.34831168831168,15,62,0.19480519480519481,"Bad roads, insecurity could wreck COVID-19 vaccination - Sub-Saharan Africa"

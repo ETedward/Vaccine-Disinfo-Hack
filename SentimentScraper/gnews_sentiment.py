@@ -16,6 +16,8 @@ import csv
 
 def main():
 
+	all_df = []
+
 	sid_obj = SentimentIntensityAnalyzer() 	
 
 	googlenews = GoogleNews()
@@ -26,16 +28,16 @@ def main():
 	Primary Phrases refer to the keywords we are interested in studying
 	Secondary Phrases refer to the target countries
 	"""
-	company_name = ['Pfizer', 'AstraZeneca', 'Sputnik', 'Sinovac']
+	company_name = ['Pfizer', 'AstraZeneca', 'Sputnik', 'Sinovac', 'Moderna', 'Johnson & Johnson']
 
-	testing_countries = ['Egypt', 'Kenya', 'Nigeria', 'Zambia']
-	# testing_countries = []
+	# testing_countries = ['Egypt', 'Kenya', 'Nigeria', 'Zamibia']
+	testing_countries = []
 
 	"""
 	Months refer to the date range 
 	"""
-	months = ['08/01/2020', '09/01/2020', '10/01/2020']
-	# months = ['01/01/2019', '02/01/2019', '03/01/2019', '04/01/2019', '05/01/2019', '06/01/2019', '07/01/2019', '08/01/2019', '09/01/2019', '10/01/2019', '11/01/2019', '12/01/2019', '01/01/2020', '02/01/2020', '03/01/2020', '04/01/2020', '05/01/2020', '06/01/2020', '07/01/2020', '08/01/2020', '09/01/2020', '10/01/2020', '11/01/2020', '12/01/2020', '01/01/2021']
+	# months = ['08/01/2020', '09/01/2020', '10/01/2020']
+	months = ['01/01/2020', '02/01/2020', '03/01/2020', '04/01/2020', '05/01/2020', '06/01/2020', '07/01/2020', '08/01/2020', '09/01/2020', '10/01/2020', '11/01/2020', '12/01/2020', '01/01/2021', '02/01/2021']
 
 	for first in company_name:
 
@@ -59,6 +61,12 @@ def main():
 
 				counter = 0
 				sum_sent = 0
+				
+				pos_count = 0
+				# neu_count = 0
+				neg_count = 0
+
+				neg_article = {'title': 'N/A', '% Negative': 0}
 
 				for i in range(0, len(months)-1):
 					googlenews.set_time_range(months[i],months[i+1])
@@ -92,11 +100,26 @@ def main():
 							# result.pop('img')
 							# result.pop('media')
 
+							# if result['% Negative'] > result['% Neutral'] and result['% Negative']>result['% Positive']: neg_count += 1
+							# elif result['% Neutral'] > result['% Positive']: neu_count += 1
+							# else: pos_count += 1
+							if result['% Positive'] > result['% Negative']: pos_count += 1
+							else: neg_count += 1
+
+							if result['% Negative'] >= neg_article['% Negative']: neg_article = result
+
 							fin.append(result)
 							seen.append(result['title'])
 
-				country_comp_score = {'country': second, 'latitude': row['Latitude'], 'longitude': row['Longitude'], 'magnitude': (sum_sent/counter)}
+				posPercent = 50
+				if pos_count+neg_count>0: posPercent = pos_count/(pos_count + neg_count)
+
+				country_comp_score = {'country': second, 'latitude': row['Latitude'], 
+				'longitude': row['Longitude'], 'magnitude': (sum_sent/counter), 'positive': pos_count, 
+				'negative': neg_count, 'pos/(pos+neg)': posPercent, 'Most negative title': neg_article['title']}
+
 				summary_data.append(country_comp_score)
+				all_df.append((country_comp_score, first))
 
 			df = pd.DataFrame(fin)
 			df.drop(columns=['date', 'datetime', 'img', 'media'])
@@ -104,6 +127,39 @@ def main():
 
 			summary_df = pd.DataFrame(summary_data)
 			summary_df.to_csv("./Output/{}_summary_output.csv".format(first),index=False)
+			# all_df.append(summary_df)
+	
+	# meta_data = []
+	# # with open('sample.csv', mode='r') as csv_file:
+	# dic_len = sum(1 for line in open('sample.csv'))
+
+	# with open('sample.csv', mode='r') as csv_file:
+	# 	csv_reader = csv.DictReader(csv_file)
+	# 	for j in range(0, dic_len):
+	# 		most_pos = 0
+	# 		for i in range(0, len(company_name)):
+	# 			if all_df[most_pos][j]['positive']<all_df[i][j]['positive']: 
+	# 				most_pos = i
+	# 		meta_data.append({all_df[0][j]['\ufeffCountry']: company_name[most_positive]})
+
+	fields = ['Country', 'Company', 'Count']  
+
+	meta_data = []
+	seen = []
+	for result in all_df:
+		if result[0]['country'] not in seen:
+			seen.append(result[0]['country'])
+			meta_data.append([result[0]['country'], result[1], result[0]['positive']])
+		else:
+			for candidate in meta_data:
+				if candidate[0]==result[0]['country'] and candidate[2]<result[0]['positive']:
+					candidate[1] = result[1]
+					candidate[2] = result[0]['positive']
+
+	with open('./Output/meta_data.csv', 'w') as f:
+		write = csv.writer(f)      
+		write.writerow(fields)
+		write.writerows(meta_data)
 
 if __name__ == "__main__":
     main()

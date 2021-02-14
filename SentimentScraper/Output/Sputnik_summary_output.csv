@@ -1,5 +1,4 @@
-country,latitude,longitude,magnitude
-Egypt,30.05,31.25,52.04639553429028
-Kenya,-1.283333333,36.816667,51.98648437499998
-Nigeria,9.083333333,7.533333,50.989298245614016
-Zambia,-15.41666667,28.283333,50.829435483870974
+country,latitude,longitude,magnitude,positive,negative,pos/(pos+neg),Most negative title
+Egypt,30.05,31.25,52.02113813229577,147,367,0.28599221789883267,"Bad roads, insecurity could wreck COVID-19 vaccination - Sub-Saharan Africa"
+Kenya,-1.283333333,36.816667,52.129426229508184,17,44,0.2786885245901639,State Dept. event discussing racism as 'national security threat'
+Nigeria,9.083333333,7.533333,47.6288679245283,10,43,0.18867924528301888,Florida Suspects Fraud Behind Spike In Unemployment Claims

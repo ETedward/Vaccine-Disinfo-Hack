@@ -1,5 +1,4 @@
-country,latitude,longitude,magnitude
-Egypt,30.05,31.25,52.07481941309254
-Kenya,-1.283333333,36.816667,49.27651315789473
-Nigeria,9.083333333,7.533333,52.3808510638298
-Zambia,-15.41666667,28.283333,51.98657894736843
+country,latitude,longitude,magnitude,positive,negative,pos/(pos+neg),Most negative title
+Egypt,30.05,31.25,51.859145114942585,196,500,0.28160919540229884,Florida Suspects Fraud Behind Spike In Unemployment Claims
+Kenya,-1.283333333,36.816667,49.5955,17,63,0.2125,Piecemeal data releases threaten to undermine Sinovac's COVID-19 vaccine
+Nigeria,9.083333333,7.533333,53.14655555555556,11,34,0.24444444444444444,China is hitting back at criticism of its vaccines with a dangerous disinformation campaign
