@@ -46,7 +46,23 @@ body {
     font-size: large;
     fill: rgb(18, 18, 68);
 }
+#content .legend .legend-text {
+    font-size: large;
+}
+
+#content .legend .legend-company {
+    font-size: large;
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+}
 #content .news {
+    font-size: large;
+}
+#content .news2 {
+    font-size: large;
+}
+#content .news3 {
     font-size: large;
 }
 </style>
@@ -71,6 +87,8 @@ body {
     <div style="padding-left: 250px">
     <div class="info"><h3>News Identifier:</h3></div>
     <div class = "news"></div>
+    <div class = "news2"></div>
+    <div class = "news3"></div>
     </div>
     <br>
   </div>
@@ -167,7 +185,7 @@ function countryNumber (d) {
     }
     if (d == "Guinea"){
         return (24);
-    }
+    }   
     if (d == "Guinea-Bissau"){
         return (25);
     }
@@ -298,7 +316,7 @@ function handleMouseover(d) {
 //   d3.select('#content .info')
 //     .text(d.properties.name + ' (path.area = ' + pixelArea.toFixed(1) + ' path.measure = ' + measure.toFixed(1) + ')');
 
-  d3.select('#content .bounding-box rect')
+    d3.select('#content .bounding-box rect')
     .attr('x', bounds[0][0])
     .attr('y', bounds[0][1])
     .attr('width', bounds[1][0] - bounds[0][0])
@@ -320,10 +338,14 @@ function handleMouseover(d) {
 
     const pnewsAccessor = d => data[countryNumber(d)].ptitle
     const pscoreAccessor = d => data[countryNumber(d)].pfizer
-    const rnewsAccessor = d => data[countryNumber(d)].stitle
+    const rnewsAccessor = d => data[countryNumber(d)].rtitle
     const rscoreAccessor = d => data[countryNumber(d)].sputnik
     const anewsAccessor = d => data[countryNumber(d)].atitle
     const ascoreAccessor = d => data[countryNumber(d)].astrazeneca
+    const cscoreAccessor = d => data[countryNumber(d)].sinovac
+    const cnewsAccessor = d => data[countryNumber(d)].ctitle
+    const companyAccessor = d => data [countryNumber(d)].company
+
     
     console.log(data[1].title);
     console.log("HI");
@@ -334,7 +356,11 @@ function handleMouseover(d) {
     console.log(rscoreAccessor("Republic of Congo"));
 
     d3.select('#content .news')
-    .text(anewsAccessor(d.properties.name));
+    .text(pnewsAccessor(d.properties.name));
+    d3.select('#content .news2')
+    .text(rnewsAccessor(d.properties.name));
+    // d3.select('#content .news3')
+    // .text(cnewsAccessor(d.properties.name));
 
     d3.select('#content .legend')
     .append("text")
@@ -345,29 +371,62 @@ function handleMouseover(d) {
 
     d3.select('#content .legend')
     .append("text")
-    .attr("y",95)
-    .attr('x',610)
-    .text("Pfizer Score: " + pscoreAccessor(d.properties.name))
-
-    d3.select('#content .legend')
-    .append("text")
     .attr("y",115)
     .attr('x',610)
-    .text("Sputnik Score: " + rscoreAccessor(d.properties.name) )
+    .attr("class","legend-text")
+    .text("🇺🇸 Pfizer Score: " + pscoreAccessor(d.properties.name))
 
     d3.select('#content .legend')
     .append("text")
     .attr("y",135)
     .attr('x',610)
-    .text("Sinovac Score: 43" )
+    .attr("class","legend-text")
+    .text("🇷🇺 Sputnik Score: " + rscoreAccessor(d.properties.name) )
 
     d3.select('#content .legend')
     .append("text")
     .attr("y",155)
     .attr('x',610)
-    .text("AstraZeneca Score: " + ascoreAccessor(d.properties.name) )
+    .attr("class","legend-text")
+    .text("🇨🇳 Sinovac Score: " + cscoreAccessor(d.properties.name) )
 
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",175)
+    .attr('x',610)
+    .attr("class","legend-text")
+    .text("🇬🇧 AstraZeneca Score: " + ascoreAccessor(d.properties.name) )
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",230)
+    .attr('x',625)
+    .attr("class","legend-text")
+    .text("The most infleuntial vaccine in ")
+    
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",250)
+    .attr('x',625)
+    .attr("class","legend-text")
+    .text("the past month in this region ...")
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",300)
+    .attr('x',625)
+    .attr("class","legend-company")
+    .text(companyAccessor(d.properties.name))
     });
+
+    // d3.select('#content.legend')
+    // .append("image")
+    // .attr("y",250)
+    // .attr('x',625)
+    // .attr('xlink:href', './pfizerlogo.jpg')
+    // .attr('width', 200)
+    // .attr('height', 200)
 
   d3.select('#content .centroid')
     .style('display', 'inline')
