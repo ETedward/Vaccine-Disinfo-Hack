@@ -329,8 +329,7 @@ function handleMouseover(d) {
     .attr('width', 350)
     .attr('height', 520)
     
-
-    const dataset = d3.csv("/complete_data.csv", function(data) {
+    const dataset = d3.csv("data/complete_data.csv", function(data) {
     for (var i = 0; i < data.length; i++) {
         console.log(data[i].pfizer); 
         console.log(data[i].ptitle);
@@ -345,10 +344,6 @@ function handleMouseover(d) {
     const cscoreAccessor = d => data[countryNumber(d)].sinovac
     const cnewsAccessor = d => data[countryNumber(d)].ctitle
     const companyAccessor = d => data [countryNumber(d)].company
-
-    
-    console.log(data[1].title);
-    console.log("HI");
 
     console.log(countryNumber("Botswana"));
     console.log(rscoreAccessor("Botswana"));
